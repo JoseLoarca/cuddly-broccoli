@@ -1,23 +1,19 @@
-module.exports = function(app){
+module.exports = function(modelo){
 	return {
-		registro:function(req, res){
-			var Sequelize = app.get('sequelize');
-			Sequelize.query( "CALL sp_registroUsuario ('"+req.body.nombreCompleto+"', '"+req.body.telefono+"', '"+req.body.correo+"', '"+req.body.direccion+"', '"+req.body.username+"', '"+req.body.password+"')").then(function(res){
-					res.status(200).send({ message: "Usuario registrado con éxito" });
+		registro:function(peticion, respuesta){
+            modelo.sequelize.query( "CALL sp_registroUsuario ('"+peticion.body.nombreCompleto+"', '"+peticion.body.telefono+"', '"+peticion.body.correo+"', '"+peticion.body.direccion+"', '"+peticion.body.username+"', '"+peticion.body.password+"')")
+                .then(function(){
+					respuesta.send({ "mensaje": "Usuario registrado con éxito" , "status":"200"});
 				}).error(function(err){
-				res.json(err);
+				    respuesta.send({"mensaje":"Error "+err,"status":"500"});
 			});
 		},
-		login:function(req, res){
-			var Sequelize = app.get('sequelize');
-			Sequelize.query("CALL sp_autenticarUsuario ('"+req.body.username+"', '"+req.body.password+"')").then(function(response){
-				if(response.length > 0){
-					res.status(200).send(response);
-				}else{
-					res.status(400).send({ message: "Usuario y/o contraseña inválidos." })
-				}
+		login:function(peticion, respuesta){
+            modelo.sequelize.query("CALL sp_autenticarUsuario ('"+peticion.body.username+"', '"+peticion.body.password+"')")
+                .then(function(data){
+				    respuesta.json(data);
 			}).error(function(err){
-				res.json(err);
+				respuesta.send({ "mensaje":"Error "+err,"status":"500" });
 			});
 		}
 	}
