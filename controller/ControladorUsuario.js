@@ -15,6 +15,13 @@ module.exports = function(modelo){
 			}).error(function(err){
 				respuesta.send({ "mensaje":"Error "+err,"status":"500" });
 			});
+		},
+		listar:function(req, res){
+			modelo.sequelize.query("CALL sp_infoUsuarios").then(function(data){
+				res.json(data);
+			}).error(function(){
+				res.json({"mensaje":"No se han podido listar los usuarios. Intente más tarde", "status":500});
+			});
 		}
 	}
 }

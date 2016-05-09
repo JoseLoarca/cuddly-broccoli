@@ -26,7 +26,7 @@ module.exports = function(modelo) {
             });
         },
         listar:function(req, res){
-            modelo.hotel.findAll().then(function(data){
+            modelo.sequelize.query("CALL sp_verHoteles").then(function(data){
                 res.json(data);
             }).error(function(){
                 res.json({"mensaje":"No se han podido listar los hoteles. Intente más tarde", "status":500});

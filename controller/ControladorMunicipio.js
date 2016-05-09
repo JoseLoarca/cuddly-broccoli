@@ -24,7 +24,7 @@ module.exports = function(modelo) {
             });
         },
         listar:function(req, res){
-            modelo.municipio.findAll().then(function(data){
+            modelo.sequelize.query("CALL sp_verMunicipio").then(function(data){
                 res.json(data);
             }).error(function(){
                 res.json({"mensaje":"No se han podido listar los municipios. Intente más tarde", "status":500});

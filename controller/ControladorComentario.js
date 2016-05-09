@@ -25,7 +25,7 @@ module.exports = function(modelo) {
             });
         },
         listar:function(req, res){
-            modelo.comentario.findAll().then(function(data){
+            modelo.sequelize.query("CALL sp_verComentarios").then(function(data){
                 res.json(data);
             }).error(function(){
                 res.json({"mensaje":"No se han podido listar los comentarios. Intente más tarde", "status":500});

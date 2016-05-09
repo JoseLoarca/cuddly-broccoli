@@ -25,7 +25,7 @@ module.exports = function(modelo) {
             });
         },
         listar:function(req, res){
-            modelo.sitioturistico.findAll().then(function(data){
+            modelo.sequelize.query("CALL sp_verSitios").then(function(data){
                 res.json(data);
             }).error(function(){
                 res.json({"mensaje":"No se han podido listar los Sitios Turisticos. Intente más tarde", "status":500});
