@@ -14,8 +14,13 @@ module.exports=(function(modelo){
     /*Usuarios*/
     ruta.post('/usuario/registro',usuario.registro);
     ruta.post('/usuario/login',usuario.login);
+    ruta.get('/token', usuario.tokenGenerator);
+
+    /*Rutas protegidas*/
+    ruta.use(usuario.tokenMiddleware);
+
     ruta.get('/usuario/listar',usuario.listar);
-    
+
     /*Departamentos*/
     ruta.get('/departamento/listar', departamento.listar);
     ruta.post('/departamento', departamento.agregar);
