@@ -12,8 +12,11 @@ module.exports = function(modelo){
 		},
 		login:function(peticion, respuesta){
             modelo.sequelize.query("CALL sp_autenticarUsuario ('"+peticion.body.username+"', '"+peticion.body.password+"')")
-                .then(function(data){
-					respuesta.json(data);
+                .then(function(user){
+					if(user.length>0)
+						respuesta.json(genToken(user));
+					else
+						respuesta.json({"user":[]});
 			}).error(function(err){
 				respuesta.send({ "mensaje":"Error "+err,"status":"500" });
 			});
