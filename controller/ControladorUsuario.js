@@ -11,7 +11,7 @@ module.exports = function(modelo){
 			});
 		},
 		login:function(peticion, respuesta){
-            modelo.sequelize.query("CALL sp_autenticarUsuario ('"+peticion.body.username+"', '"+peticion.body.password+"')")
+            modelo.sequelize.query("CALL sp_autenticarUsuario ('"+peticion.body.correo+"', '"+peticion.body.password+"')")
                 .then(function(user){
 					if(user.length>0)
 						respuesta.json(genToken(user));
